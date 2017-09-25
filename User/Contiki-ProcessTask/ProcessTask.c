@@ -13,6 +13,7 @@ PROCESS(CommunicatProtocol_Send_Sensor_Data, "Communication protocol send sensor
 
 PROCESS(wifi_send_test_process, "Wifi module send data test");
 PROCESS(W5500_send_test_process, "Test W5500 module send data");
+PROCESS(LCD_display_test_process, "Test LCD module display data");
 
 AUTOSTART_PROCESSES(&etimer_process,&IWDG_Feed_process);
 
@@ -85,6 +86,19 @@ PROCESS_THREAD(W5500_send_test_process, ev, data)
     PROCESS_END();
 }
 
+PROCESS_THREAD(LCD_display_test_process, ev, data)
+{
+    static struct etimer et;
+    PROCESS_BEGIN();
+		while (1)
+		{
+			  LCD_ShowChar(300,210,'s',24,1);
+				Contiki_etimer_DelayMS(500);
+		}
+    PROCESS_END();
+
+}
+
 PROCESS_THREAD(clock_test_process, ev, data)
 {
     static uint16_t i,start_count,end_count,diff;
@@ -127,6 +141,7 @@ PROCESS_THREAD(cJSON_test_process, ev, data)
     PROCESS_END();
 }
 
+
 PROCESS_THREAD(CommunicatProtocol_Send_Sensor_Data, ev, data)
 {
     static struct etimer et;
@@ -142,8 +157,6 @@ PROCESS_THREAD(CommunicatProtocol_Send_Sensor_Data, ev, data)
         cJSON_AddItemToObject(root, "Owner", cJSON_CreateString("admin"));
 
         cJSON_AddItemToObject(root, "Address", cJSON_CreateNumber(Protocol_LocalhostAddress));
-
-        
 
 //#ifdef __SDS01_MODULE_ON__
 //        cJSON_AddItemToObject(root, "PM2_5", cJSON_CreateNumber(PM2_5_GlobalData));

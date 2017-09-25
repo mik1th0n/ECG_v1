@@ -32,7 +32,7 @@
 #include "ESP8266_function.h"
 #include "E30TTLUART.h"
 #include "W5500.h"
-
+#include "ILI93xx.h"
 
 #include "contiki-conf.h"
 #include <stdint.h>
@@ -45,7 +45,6 @@
 #include <clock.h>
 #include "contiki_delay.h"
 #include "ProcessTask.h"
-
 
 void BSP_Config(void)
 {
@@ -77,12 +76,18 @@ void BSP_Config(void)
     printf("E30-TTL-100 OK.\r\n");
 #endif
 
-}
+#ifdef __LCD_MODULE_ON__
+    TFTLCD_Init();		// LCD初始化
+		LCD_ShowString(0,210,200,24,24,"Vpp=0000mv");
+		LCD_ShowString(130,210,220,24,24,"Dwell Time:");
+		//LCD_ShowxNum(260,210,tim ,3,24,0);
+		//LCD_ShowChar(300,210,'s',24,1);
+#endif
 
+}
 
 int main(void)
 {
-		
     BSP_Config();    
     printf("hello world.\r\n");
     IWDG_Start(2);  // wifi模块透传之后开启看门狗
@@ -117,6 +122,10 @@ int main(void)
 
 #ifdef __W5500_SEND_TEST_ON__
     process_start(&W5500_send_test_process,NULL);
+#endif
+
+#ifdef __LCD_MODULE_ON__
+    process_start(&LCD_display_test_process,NULL);
 #endif
 
     while (1)

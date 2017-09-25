@@ -30,6 +30,7 @@
 #include "ESP8266_function.h"
 #include "E30TTLUART.h"
 #include "W5500.h"
+#include "ILI93xx.h"
 
 #include "contiki-conf.h"
 #include <stdint.h>
@@ -48,7 +49,8 @@
 //    #define __LED_BLINK_ON__            //LED 闪烁
     #define __WIFI_MODULE_ON__          //WIFI模块开启
 //    #define __W5500_MODULE_ON__         //W5500模块开启
-    #define __E30TTLUART_MODULE_ON__    //E30无线串口模块
+//    #define __E30TTLUART_MODULE_ON__    //E30无线串口模块
+		#define __LCD_MODULE_ON__    				//LCD显示模块
     #define __COMMUNICAT_PROTOCOL__     //管理发送队列
     #define __COMMUNICAT_PROTOCOL_SENSOR_DATA__  //通过JSON发送所有数据
 #else
@@ -73,6 +75,7 @@ PROCESS_NAME(CommunicatProtocol_Send_Sensor_Data);
 
 PROCESS_NAME(wifi_send_test_process);
 PROCESS_NAME(W5500_send_test_process);
+PROCESS_NAME(LCD_display_test_process);
 
 #endif
 
