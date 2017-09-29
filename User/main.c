@@ -56,7 +56,7 @@ void BSP_Config(void)
     srand(STMFLASH_Read_OneWordData(STM32_FLASH_END_PAGE));
     STMFLASH_Write_OneWordData(STM32_FLASH_END_PAGE,rand());
     NVIC_Configuration_Init();
-    USART1_Config(921600);
+    USART1_Config(115200);
     printf("Start Contiki OS\r\n");
 #ifdef __LED_BLINK_ON__
     LED_GPIO_Config(); 
@@ -92,7 +92,7 @@ int main(void)
 {
     BSP_Config();    
     printf("hello world.\r\n");
-    IWDG_Start(2);  // wifi模块透传之后开启看门狗
+    // IWDG_Start(2);  // wifi模块透传之后开启看门狗
     process_init();
     autostart_start(autostart_processes);
 

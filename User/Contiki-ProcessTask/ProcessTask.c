@@ -93,7 +93,7 @@ PROCESS_THREAD(LCD_display_test_process, ev, data)
 		while (1)
 		{
 			  LCD_ShowChar(300,210,'s',24,1);
-				Contiki_etimer_DelayMS(500);
+				Contiki_etimer_DelayMS(1000);
 		}
     PROCESS_END();
 

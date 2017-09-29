@@ -59,12 +59,13 @@ void ESP8266_AT_Test(void)
 bool ESP8266_Cmd (char * cmd, char * reply1, char * reply2, u32 waittime)
 {    
 	strEsp8266_Fram_Record .InfBit .FramLength = 0;               //从新开始接收新的数据包
-
+	//IS_WIFI_LOG_DEBUG && PC_Usart("a\r\n");	
 	ESP8266_Usart("%s\r\n", cmd);
 
 	if((reply1 == 0) &&(reply2 == 0))                      //不需要接收数据
 		return true;
 	
+	//IS_WIFI_LOG_DEBUG && PC_Usart("b\r\n");	
 	Delay_ms(waittime);                 //延时
 	
 	strEsp8266_Fram_Record .Data_RX_BUF [ strEsp8266_Fram_Record .InfBit .FramLength ]  = '\0';
@@ -368,12 +369,13 @@ void ESP8266_STA_TCP_Client(void)
     IS_WIFI_LOG_DEBUG && PC_Usart("Try to enter command mode.\r\n");
 		
 		/* 程序不能进入AT命令模式 */
+	
     do
     {
         ESP8266_Usart("+++");
         Delay_ms (50) ;
     }while(!ESP8266_Cmd ("AT", "OK", NULL, 100));//进入AT命令模式
-	
+		
     IS_WIFI_LOG_DEBUG && PC_Usart("AT command is OK.\r\n");
     
     if(ESP8266_Cmd ("AT+CIFSR","+CIFSR:STAIP,\"0.0.0.0\"",NULL,250))

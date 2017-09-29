@@ -3,7 +3,7 @@
 bool IS_WIFI_LOG_DEBUG = true;
 
 char WIFI_SSID_NAME[] = "MERCURY_7A02";//此处填写wifi名称
-char WIFI_PASSWORD[] = "labswordsman256";//此处填写wifi密码
+char WIFI_PASSWORD[] = "miki257056,,";//此处填写wifi密码
 
 /*
 char WIFI_SSID_NAME[] = "CML";//此处填写wifi名称
