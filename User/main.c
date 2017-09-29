@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   */
- 
+/********************************* STM32å†…éƒ¨èµ„æºå’ŒCåº“å¤´æ–‡ä»¶ ****************************/
 #include "stm32f10x.h"
 #include "stm32f10x_conf.h"
 #include <string.h>
@@ -28,12 +28,14 @@
 #include "CommunicationConfig.h"
 #include "CommunicationProtocol.h"
 
+/********************************* æ¿è½½ç¡¬ä»¶å¤´æ–‡ä»¶ ****************************/
 #include "ESP8266_config.h"
 #include "ESP8266_function.h"
 #include "E30TTLUART.h"
 #include "W5500.h"
 #include "ILI93xx.h"
 
+/********************************* contikiç³»ç»Ÿå¤´æ–‡ä»¶ ****************************/
 #include "contiki-conf.h"
 #include <stdint.h>
 #include <stdio.h>
@@ -48,7 +50,7 @@
 
 void BSP_Config(void)
 {
-    /* ³õÊ¼»¯ */
+    /* åˆå§‹åŒ– */
     delay_init();
     clock_init();
     srand(STMFLASH_Read_OneWordData(STM32_FLASH_END_PAGE));
@@ -67,7 +69,7 @@ void BSP_Config(void)
 #ifdef __WIFI_MODULE_ON__
     WiFi_Config();
     ESP8266_STA_TCP_Client();
-    ChangeUSART2ReceiveMode();// ¹Ø±Õ´®¿Ú2¿ÕÏĞÖĞ¶Ï Ê¹ÄÜ´®¿Ú2½ÓÊÕÖĞ¶Ï 
+    ChangeUSART2ReceiveMode();// å…³é—­ä¸²å£2ç©ºé—²ä¸­æ–­ ä½¿èƒ½ä¸²å£2æ¥æ”¶ä¸­æ–­
 #endif  
 
 #ifdef __E30TTLUART_MODULE_ON__
@@ -77,7 +79,7 @@ void BSP_Config(void)
 #endif
 
 #ifdef __LCD_MODULE_ON__
-    TFTLCD_Init();		// LCD³õÊ¼»¯
+    TFTLCD_Init();		// LCDåˆå§‹åŒ–
 		LCD_ShowString(0,210,200,24,24,"Vpp=0000mv");
 		LCD_ShowString(130,210,220,24,24,"Dwell Time:");
 		//LCD_ShowxNum(260,210,tim ,3,24,0);
@@ -90,7 +92,7 @@ int main(void)
 {
     BSP_Config();    
     printf("hello world.\r\n");
-    IWDG_Start(2);  // wifiÄ£¿éÍ¸´«Ö®ºó¿ªÆô¿´ÃÅ¹·
+    IWDG_Start(2);  // wifiæ¨¡å—é€ä¼ ä¹‹åå¼€å¯çœ‹é—¨ç‹—
     process_init();
     autostart_start(autostart_processes);
 
