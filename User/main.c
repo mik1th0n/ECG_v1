@@ -48,11 +48,14 @@
 #include "contiki_delay.h"
 #include "ProcessTask.h"
 
+extern u32  tim;
+
 void BSP_Config(void)
 {
     /* 初始化 */
     delay_init();
     clock_init();
+
     srand(STMFLASH_Read_OneWordData(STM32_FLASH_END_PAGE));
     STMFLASH_Write_OneWordData(STM32_FLASH_END_PAGE,rand());
     NVIC_Configuration_Init();
@@ -79,12 +82,28 @@ void BSP_Config(void)
 #endif
 
 #ifdef __LCD_MODULE_ON__
-    TFTLCD_Init();		// LCD初始化
+		/* ADC初始化 */
+		Adc_Init();
+		
+		// LCD初始化
+		TFTLCD_Init();
+		
+		Delay_NOP_ms(2000);
+		
+		/* 画网格 */
+		Draw_Gaid();
+		
+		/*显示坐标 */
+		Draw_Coordinate();
+	
+		POINT_COLOR=RED; 
+		
 		LCD_ShowString(0,210,200,24,24,"Vpp=0000mv");
 		LCD_ShowString(130,210,220,24,24,"Dwell Time:");
-		//LCD_ShowxNum(260,210,tim ,3,24,0);
-		//LCD_ShowChar(300,210,'s',24,1);
+		LCD_ShowxNum(260,210,tim ,3,24,0);
+		LCD_ShowChar(300,210,'s',24,1);
 #endif
+
 
 }
 
@@ -92,7 +111,7 @@ int main(void)
 {
     BSP_Config();    
     printf("hello world.\r\n");
-    // IWDG_Start(2);  // wifi模块透传之后开启看门狗
+    IWDG_Start(2);  // wifi模块透传之后开启看门狗
     process_init();
     autostart_start(autostart_processes);
 
@@ -100,7 +119,7 @@ int main(void)
     process_start(&red_blink_process,NULL);
     process_start(&green_blink_process,NULL);
 #endif    
-    
+
 #ifdef __CJSON_LIB_TEST__
     process_start(&cJSON_test_process,NULL);
 #endif
@@ -127,7 +146,9 @@ int main(void)
 #endif
 
 #ifdef __LCD_MODULE_ON__
-    process_start(&LCD_display_test_process,NULL);
+		printf("qq.\n");
+    process_start(&LCD_display_waveform_process,NULL);
+		printf("ww.\n");
 #endif
 
     while (1)

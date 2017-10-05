@@ -31,6 +31,8 @@
 #include "E30TTLUART.h"
 #include "W5500.h"
 #include "ILI93xx.h"
+#include "filter.h"
+#include "waveform.h"
 
 #include "contiki-conf.h"
 #include <stdint.h>
@@ -72,10 +74,11 @@ PROCESS_NAME(Communication_Protocol_Send_process);
 PROCESS_NAME(clock_test_process);
 PROCESS_NAME(cJSON_test_process);
 PROCESS_NAME(CommunicatProtocol_Send_Sensor_Data);
+PROCESS_NAME(LCD_display_waveform_process);
 
 PROCESS_NAME(wifi_send_test_process);
 PROCESS_NAME(W5500_send_test_process);
-PROCESS_NAME(LCD_display_test_process);
+
 
 #endif
 

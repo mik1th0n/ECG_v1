@@ -148,7 +148,7 @@
             <RestoreSysVw>1</RestoreSysVw>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
-          <TargetSelection>11</TargetSelection>
+          <TargetSelection>6</TargetSelection>
           <SimDlls>
             <CpuDll></CpuDll>
             <CpuDllArguments></CpuDllArguments>
@@ -162,7 +162,7 @@
             <PeripheralDll></PeripheralDll>
             <PeripheralDllArguments></PeripheralDllArguments>
             <InitializationFile></InitializationFile>
-            <Driver>STLink\ST-LINKIII-KEIL_SWO.dll</Driver>
+            <Driver>Segger\JL2CM3.dll</Driver>
           </TargetDlls>
         </DebugOption>
         <Utilities>
@@ -366,7 +366,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD, USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\Libraries\CMSIS;..\..\User;..\..\Libraries\FWlib\inc;..\..\User\gpio;..\..\User\SysTick;..\..\User\usart;..\..\User\DMA;..\..\User\contiki-code\cpu\arm\stm32f103;..\..\User\contiki-code\platform\stm32test;..\..\User\contiki-code\core;..\..\User\contiki-code\core\sys;..\..\User\IWDG;..\..\User\SPI;..\..\Hardware\DHT11;..\..\Hardware\OLED;..\..\Libraries\sys;..\..\User\delay;..\..\User\ADC;..\..\User\TIMER;..\..\User\EXTI;..\..\User\TIMER\TIM4-capture;..\..\User\I2C;..\..\Hardware\BH1750;..\..\User\NVIC;..\..\User\Contiki-ProcessTask;..\..\Libraries\cJSON;..\..\Libraries\Malloc;..\..\User\CommunicationProtocol;..\..\User\FIFO;..\..\Hardware\E30TTL100;..\..\Hardware\W5500;..\..\User\STM_FLASH;..\..\Hardware\ESP8266;..\..\User\PWM;..\..\Hardware\LCD;..\..\Hardware\SRAM</IncludePath>
+              <IncludePath>..\..\Libraries\CMSIS;..\..\User;..\..\Libraries\FWlib\inc;..\..\User\gpio;..\..\User\SysTick;..\..\User\usart;..\..\User\DMA;..\..\User\contiki-code\cpu\arm\stm32f103;..\..\User\contiki-code\platform\stm32test;..\..\User\contiki-code\core;..\..\User\contiki-code\core\sys;..\..\User\IWDG;..\..\User\SPI;..\..\Hardware\DHT11;..\..\Hardware\OLED;..\..\Libraries\sys;..\..\User\delay;..\..\User\ADC;..\..\User\TIMER;..\..\User\EXTI;..\..\User\TIMER\TIM4-capture;..\..\User\I2C;..\..\Hardware\BH1750;..\..\User\NVIC;..\..\User\Contiki-ProcessTask;..\..\Libraries\cJSON;..\..\Libraries\Malloc;..\..\User\CommunicationProtocol;..\..\User\FIFO;..\..\Hardware\E30TTL100;..\..\Hardware\W5500;..\..\User\STM_FLASH;..\..\Hardware\ESP8266;..\..\User\PWM;..\..\Hardware\LCD;..\..\Hardware\SRAM;..\..\Hardware\ECG\filter;..\..\Hardware\ECG\waveform</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -743,6 +743,21 @@
               <FileName>ILI93xx.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Hardware\LCD\ILI93xx.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>ECG</GroupName>
+          <Files>
+            <File>
+              <FileName>filter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Hardware\ECG\filter\filter.c</FilePath>
+            </File>
+            <File>
+              <FileName>waveform.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Hardware\ECG\waveform\waveform.c</FilePath>
             </File>
           </Files>
         </Group>

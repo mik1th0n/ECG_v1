@@ -48,6 +48,7 @@ extern u16  BACK_COLOR; //背景颜色.默认为白色
 #define	LCD_WR_CLR	GPIO_ResetBits(GPIOC,GPIO_Pin_7)     //写数据			PC7
 #define	LCD_RD_CLR	GPIO_ResetBits(GPIOC,GPIO_Pin_6)    //读数据			PC6  
 
+#define LCD_Delay_ms              Delay_ms
 
 
 //PB0~15,作为数据线

@@ -9,11 +9,12 @@ PROCESS(cJSON_test_process, "Test cJSON Lib");
 PROCESS(Communication_Protocol_Send_process, "Communication protocol send packet serviced");
 PROCESS(Communication_Protocol_Load_process, "Communication protocol load bytes to packet serviced");
 PROCESS(CommunicatProtocol_Send_Sensor_Data, "Communication protocol send sensor data");
+PROCESS(LCD_display_waveform_process, "LCD module display waveform data");
 
 
 PROCESS(wifi_send_test_process, "Wifi module send data test");
 PROCESS(W5500_send_test_process, "Test W5500 module send data");
-PROCESS(LCD_display_test_process, "Test LCD module display data");
+
 
 AUTOSTART_PROCESSES(&etimer_process,&IWDG_Feed_process);
 
@@ -22,20 +23,6 @@ float lightIntensityGlobalData;
 uint32_t CardID_GlobalData;
 
 /*******************PROCESS************************/
-
-//PROCESS_THREAD(red_blink_process, ev, data)
-//{
-//    static struct etimer et;
-//    PROCESS_BEGIN();
-//    while(1)
-//    {
-//        Contiki_etimer_DelayMS(500);
-//        LED_Red_Off();
-//        Contiki_etimer_DelayMS(500);
-//        LED_Red_On();
-//    }
-//    PROCESS_END();
-//}
 
 PROCESS_THREAD(green_blink_process, ev, data)
 {
@@ -86,17 +73,22 @@ PROCESS_THREAD(W5500_send_test_process, ev, data)
     PROCESS_END();
 }
 
-PROCESS_THREAD(LCD_display_test_process, ev, data)
+PROCESS_THREAD(LCD_display_waveform_process, ev, data)
 {
     static struct etimer et;
+		float temp1;
     PROCESS_BEGIN();
 		while (1)
 		{
-			  LCD_ShowChar(300,210,'s',24,1);
-				Contiki_etimer_DelayMS(1000);
+			  Get_Adc_Val();
+//				printf("aaa.\n");
+				Draw_Oscillogram();									// ª≠≤®–Œ
+				temp1=Get_Vpp();										// ∑Â∑Â÷µmv	
+				LCD_ShowxNum(49,210,temp1,4,24,0);	// œ‘ æ∑Â∑Â÷µmv			
+//				printf("bbb.\n");
+				Contiki_etimer_DelayMS(1);
 		}
     PROCESS_END();
-
 }
 
 PROCESS_THREAD(clock_test_process, ev, data)
@@ -200,8 +192,6 @@ PROCESS_THREAD(Communication_Protocol_Send_process, ev, data)
     }
     PROCESS_END();
 }
-
-
 
 PROCESS_THREAD(IWDG_Feed_process, ev, data)
 {

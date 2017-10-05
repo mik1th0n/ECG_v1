@@ -46,7 +46,7 @@ void ESP8266_WIFI_GPIO_Config( void )
     RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOA, ENABLE ); 
 
     /* 配置WiFi模块的片选（CH）引脚	复位重启（RST）引脚*/
-    /*选择要控制的GPIOA0（CH）引脚和GPIOA1（RST）引脚*/															   
+    /*选择要控制的GPIOA0（CH）引脚和GPIOA0（RST）引脚*/															   
     GPIO_InitStructure.GPIO_Pin = WIFI_RST_GPIO_Pin;	
 
     /*设置引脚模式为通用推挽输出*/
