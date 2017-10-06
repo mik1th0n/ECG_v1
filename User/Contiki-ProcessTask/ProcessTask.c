@@ -10,18 +10,20 @@ PROCESS(Communication_Protocol_Send_process, "Communication protocol send packet
 PROCESS(Communication_Protocol_Load_process, "Communication protocol load bytes to packet serviced");
 PROCESS(CommunicatProtocol_Send_Sensor_Data, "Communication protocol send sensor data");
 PROCESS(LCD_display_waveform_process, "LCD module display waveform data");
-
+PROCESS(KEY_Scan_process, "KEY scan data");
+PROCESS(ECG_send_data_process, "ECG send data");
 
 PROCESS(wifi_send_test_process, "Wifi module send data test");
 PROCESS(W5500_send_test_process, "Test W5500 module send data");
-
 
 AUTOSTART_PROCESSES(&etimer_process,&IWDG_Feed_process);
 
 /* 此处应和网页的用户信息=》传感器类型的名字相匹配 */
 float lightIntensityGlobalData;
 uint32_t CardID_GlobalData;
+u16 ECG_GlobalData;
 
+extern u32 tim;		/* 根据频率修改采样间隔 */
 /*******************PROCESS************************/
 
 PROCESS_THREAD(green_blink_process, ev, data)
@@ -73,24 +75,64 @@ PROCESS_THREAD(W5500_send_test_process, ev, data)
     PROCESS_END();
 }
 
+PROCESS_THREAD(KEY_Scan_process, ev, data)
+{
+		static struct etimer et;
+		static u8 key_val = 0;
+    PROCESS_BEGIN();
+		while (1)
+		{
+				key_val = KEY_Scan(1);
+			
+				if(1 == key_val)
+				{
+						tim += 10;
+				}
+				if(2 == key_val)
+				{
+						tim -= 10;
+				}
+				printf("tim val:%d.\n",tim);
+				Contiki_etimer_DelayMS(200);
+		}
+    PROCESS_END();
+	
+}
+
 PROCESS_THREAD(LCD_display_waveform_process, ev, data)
 {
     static struct etimer et;
-		float temp1;
+		float vpp_val;
     PROCESS_BEGIN();
 		while (1)
 		{
 			  Get_Adc_Val();
 //				printf("aaa.\n");
 				Draw_Oscillogram();									// 画波形
-				temp1=Get_Vpp();										// 峰峰值mv	
-				LCD_ShowxNum(49,210,temp1,4,24,0);	// 显示峰峰值mv			
+				vpp_val = Get_Vpp();										// 峰峰值mv	
+				LCD_ShowxNum(49,210,vpp_val,4,24,0);	// 显示峰峰值mv
+				LCD_ShowxNum(260,210,tim ,3,24,0);			
 //				printf("bbb.\n");
 				Contiki_etimer_DelayMS(1);
 		}
     PROCESS_END();
 }
 
+PROCESS_THREAD(ECG_send_data_process, ev, data)
+{
+    static struct etimer et;
+		u16 ecg_val;
+    PROCESS_BEGIN();
+		while (1)
+		{
+				ecg_val = Get_Adc_Average(ADC_Channel_1,50);
+				ECG_GlobalData = ecg_val;
+				Contiki_etimer_DelayMS(1);
+		}
+    PROCESS_END();
+	
+		 
+}
 PROCESS_THREAD(clock_test_process, ev, data)
 {
     static uint16_t i,start_count,end_count,diff;
@@ -150,10 +192,9 @@ PROCESS_THREAD(CommunicatProtocol_Send_Sensor_Data, ev, data)
 
         cJSON_AddItemToObject(root, "Address", cJSON_CreateNumber(Protocol_LocalhostAddress));
 
-//#ifdef __SDS01_MODULE_ON__
-//        cJSON_AddItemToObject(root, "PM2_5", cJSON_CreateNumber(PM2_5_GlobalData));
-//        cJSON_AddItemToObject(root, "PM10", cJSON_CreateNumber(PM10_GlobalData));
-//#endif
+#ifdef __ECG_MODULE_ON__
+        cJSON_AddItemToObject(root, "ECG", cJSON_CreateNumber(ECG_GlobalData));
+#endif
 
         cJSONout = cJSON_PrintUnformatted(root);
         cJSON_Delete(root);

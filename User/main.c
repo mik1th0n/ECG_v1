@@ -34,6 +34,7 @@
 #include "E30TTLUART.h"
 #include "W5500.h"
 #include "ILI93xx.h"
+#include "key.h"
 
 /********************************* contiki系统头文件 ****************************/
 #include "contiki-conf.h"
@@ -79,6 +80,10 @@ void BSP_Config(void)
 		E30TTLUART_Init();
     E30TTLUART_MultiCountConfig(0x0002,0x50,DISABLE,5);		
     printf("E30-TTL-100 OK.\r\n");
+#endif
+
+#ifdef __KEY_MODULE_ON__
+		KEY_Init();
 #endif
 
 #ifdef __LCD_MODULE_ON__
@@ -145,10 +150,22 @@ int main(void)
     process_start(&W5500_send_test_process,NULL);
 #endif
 
+#ifdef __KEY_MODULE_ON__
+		printf("qq.\n");
+    process_start(&KEY_Scan_process,NULL);
+		printf("ww.\n");
+#endif
+
 #ifdef __LCD_MODULE_ON__
 		printf("qq.\n");
     process_start(&LCD_display_waveform_process,NULL);
 		printf("ww.\n");
+#endif
+
+#ifdef __ECG_MODULE_ON__
+		printf("AA.\n");
+    process_start(&ECG_send_data_process,NULL);
+		printf("SS.\n");
 #endif
 
     while (1)
